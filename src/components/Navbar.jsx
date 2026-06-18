@@ -68,6 +68,7 @@ const Navbar = () => {
               <Switch
                 value={mode === "dark" ? true : false}
                 onChange={toggleTheme}
+                
               />
               <IconButton>
                 <DarkModeOutlinedIcon />

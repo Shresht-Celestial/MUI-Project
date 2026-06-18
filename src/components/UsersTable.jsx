@@ -1,7 +1,12 @@
+import { Paper, Stack, Typography } from "@mui/material"
 
 const UsersTable = () => {
   return (
-    <div>UsersTable</div>
+    <Paper>
+        <Stack>
+            <Typography variant="h6">Recent</Typography>
+        </Stack>
+    </Paper>
   )
 }
 
