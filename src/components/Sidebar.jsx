@@ -6,6 +6,7 @@ import {
   ListItemText,
   Stack,
   Typography,
+  useTheme,
 } from "@mui/material";
 import DashboardTwoToneIcon from "@mui/icons-material/DashboardTwoTone";
 
@@ -16,8 +17,8 @@ import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
-import {  useLocation, useNavigate } from "react-router";
+import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
+import { useLocation, useNavigate } from "react-router";
 
 const menuItems = [
   { label: "Dashboard", path: "/", icon: HomeOutlinedIcon },
@@ -32,18 +33,20 @@ const menuItems = [
 const Sidebar = () => {
   const location = useLocation();
   const selectedPath = location.pathname;
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
+  const theme = useTheme();
   return (
     <Box
       sx={{
-        bgcolor: "#0F172A",
-        color: "white",
+        bgcolor: theme.palette.custom.sidebar,
+        color: theme.palette.custom.sidebarText,
         minHeight: "100vh",
         px: 3,
         py: 5,
       }}
     >
-      <Stack spacing={30}
+      <Stack
+        spacing={30}
         sx={{
           height: "100%",
           justifyContent: "space-between",
@@ -57,7 +60,7 @@ const Sidebar = () => {
               alignItems: "center",
               borderBottom: "1px solid black",
               pb: 2,
-              color: "#CBD5E1"
+              color: theme.palette.custom.sidebarText,
             }}
           >
             <Box
@@ -67,7 +70,9 @@ const Sidebar = () => {
                 alignItems: "center",
               }}
             >
-              <DashboardTwoToneIcon sx={{ fill: "blue" }} />
+              <DashboardTwoToneIcon
+                sx={{ fill: theme.palette.custom.sidebarIcon }}
+              />
             </Box>
             <Typography>Dashboard Pro</Typography>
           </Stack>
@@ -82,17 +87,26 @@ const Sidebar = () => {
                     borderRadius: 2,
                     mt: 2,
                     mb: 1,
-                    color: isSelected ? "white" : "#CBD5E1",
-                    bgcolor: isSelected ? "#1D4ED8" : "transparent",
+                    color: isSelected
+                      ? theme.palette.custom.sidebarActiveText
+                      : theme.palette.custom.sidebarText,
+                    bgcolor: isSelected
+                      ? theme.palette.custom.sidebarHover
+                      : "transparent",
                     "&:hover": {
-                      bgcolor: "#1d4fd8a7",
-                      color: "white",
+                      bgcolor: theme.palette.custom.sidebarHover,
+                      color: theme.palette.custom.sidebarActiveText,
                     },
-
                   }}
                   onClick={() => navigate(`${item.path}`)}
                 >
-                  <ListItemIcon sx={{ color: "#CBD5E1", minWidth: 40 }}>
+                  <ListItemIcon
+                    sx={{
+                      color: isSelected
+                        ? theme.palette.custom.sidebarActiveText
+                        : theme.palette.custom.sidebarText,
+                    }}
+                  >
                     <Icon />
                   </ListItemIcon>
 
@@ -104,24 +118,27 @@ const Sidebar = () => {
         </Box>
 
         <Box>
-            <ListItemButton
-               sx={{
-                    borderRadius: 2,
-                    mt: 2,
-                    mb: 1,
-                    color: "#CBD5E1",
-                    bgcolor: "transparent",
-                    "&:hover": {
-                      bgcolor: "#1d4fd8a7",
-                      color: "white",
-                    }
-                }}
-            >
-                <ListItemIcon>
-                    <HelpOutlineRoundedIcon sx={{ color: "#CBD5E1", minWidth: 40 }} />
-                </ListItemIcon>
-                <ListItemText primary={"Help & Support"} sx={{color: "#CBD5E1"}}/>
-            </ListItemButton>
+          <ListItemButton
+            sx={{
+              borderRadius: 2,
+              mt: 2,
+              mb: 1,
+              color: theme.palette.custom.sidebarText,
+              bgcolor: theme.palette.custom.sidebar,
+              "&:hover": {
+                      bgcolor: theme.palette.custom.sidebarHover,
+                      color: theme.palette.custom.sidebarActiveText,
+              },
+            }}
+          >
+            <ListItemIcon>
+              <HelpOutlineRoundedIcon sx={{ color: theme.palette.custom.sidebarText, minWidth: 40 }} />
+            </ListItemIcon>
+            <ListItemText
+              primary={"Help & Support"}
+              sx={{ color:  theme.palette.custom.sidebarText}}
+            />
+          </ListItemButton>
         </Box>
       </Stack>
     </Box>

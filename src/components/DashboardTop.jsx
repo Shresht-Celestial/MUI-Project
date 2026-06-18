@@ -12,6 +12,7 @@ import {
   Stack,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { useState } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -22,6 +23,7 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
+
 const MenuProps = {
   slotProps: {
     paper: {
@@ -37,38 +39,49 @@ const departments = ["Engineering", "Marketing", "Sales", "Finance", "Support"];
 const statuses = ["Active", "Inactive", "Pending", "Suspended", "Deleted"];
 
 const DashboardTop = () => {
+  const theme = useTheme();
+
   const [department, setDepartment] = useState([]);
-
   const [status, setStatus] = useState([]);
-
   const [viewType, setViewType] = useState("weekly");
 
   const handleDepartment = (event) => {
     const { value } = event.target;
-    setDepartment(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value,
-    );
+    setDepartment(typeof value === "string" ? value.split(",") : value);
   };
 
   const handleStatus = (event) => {
     const { value } = event.target;
-    setStatus(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value,
-    );
+    setStatus(typeof value === "string" ? value.split(",") : value);
   };
 
   return (
-    <Paper sx={{ width: "100%", display: "flex", px: 3, py: 2 }}>
-      <Stack direction={"row"} spacing={1} sx={{ width: "70%" }}>
+    <Paper
+      sx={{
+        width: "100%",
+        display: "flex",
+        px: 3,
+        py: 2,
+        bgcolor: theme.palette.background.paper,
+        border: `1px solid ${theme.palette.custom.border}`,
+        borderRadius: 3,
+      }}
+    >
+      <Stack direction="row" spacing={1} sx={{ width: "70%" }}>
         <Stack>
-          <Typography variant="body">Department</Typography>
+          <Typography
+            variant="body2"
+            sx={{ color: theme.palette.text.primary }}
+          >
+            Department
+          </Typography>
+
           <FormControl sx={{ m: 1, width: 260 }}>
             <InputLabel id="department-label">All Departments</InputLabel>
+
             <Select
               labelId="department-label"
-              id="department-label"
+              id="department-select"
               multiple
               value={department}
               onChange={handleDepartment}
@@ -76,6 +89,21 @@ const DashboardTop = () => {
               renderValue={(selected) => selected.join(", ")}
               MenuProps={MenuProps}
             >
+              <TextField
+                placeholder="Search departments..."
+                fullWidth
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchOutlinedIcon
+                          sx={{ color: theme.palette.text.secondary }}
+                        />
+                      </InputAdornment>
+                    ),
+                  },
+                }}
+              />
               {departments.map((dept) => {
                 const selected = department.includes(dept);
                 const SelectionIcon = selected
@@ -97,12 +125,19 @@ const DashboardTop = () => {
         </Stack>
 
         <Stack>
-          <Typography variant="body">Status</Typography>
+          <Typography
+            variant="body2"
+            sx={{ color: theme.palette.text.primary }}
+          >
+            Status
+          </Typography>
+
           <FormControl sx={{ m: 1, width: 260 }}>
             <InputLabel id="status-label">All Status</InputLabel>
+
             <Select
               labelId="status-label"
-              id="status-label"
+              id="status-select"
               multiple
               value={status}
               onChange={handleStatus}
@@ -131,12 +166,15 @@ const DashboardTop = () => {
         </Stack>
 
         <Stack sx={{ width: 320 }}>
-          <Typography variant="body" sx={{ mb: 2 }}>
+          <Typography
+            variant="body2"
+            sx={{ mb: 2, color: theme.palette.text.primary }}
+          >
             View Type
           </Typography>
+
           <RadioGroup
             row
-            defaultValue="weekly"
             value={viewType}
             onChange={(e) => setViewType(e.target.value)}
           >
@@ -157,9 +195,13 @@ const DashboardTop = () => {
 
       <Stack sx={{ flex: 1 }}>
         <Stack>
-          <Typography variant="body" sx={{ mb: 1 }}>
+          <Typography
+            variant="body2"
+            sx={{ mb: 1, color: theme.palette.text.primary }}
+          >
             Search
           </Typography>
+
           <TextField
             placeholder="Search users, orders..."
             fullWidth
@@ -167,7 +209,9 @@ const DashboardTop = () => {
               input: {
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchOutlinedIcon />
+                    <SearchOutlinedIcon
+                      sx={{ color: theme.palette.text.secondary }}
+                    />
                   </InputAdornment>
                 ),
               },

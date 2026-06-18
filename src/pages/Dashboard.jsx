@@ -1,15 +1,15 @@
-import { Box, Stack, } from "@mui/material";
+import { Box, Stack, useTheme } from "@mui/material";
 import Sidebar from "../components/Sidebar";
 import { Outlet, useLocation } from "react-router";
 import Navbar from "../components/Navbar";
 import DashboardTop from "../components/DashboardTop";
 import StatCard from "../components/StatCard";
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PeopleIcon from "@mui/icons-material/People";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import UsersTable from "../components/UsersTable";
-
+import SettingsTable from "../components/SettingsTable";
 
 const statsData = [
   {
@@ -35,42 +35,38 @@ const statsData = [
     value: "2,350",
     growth: "+10.1%",
     icon: ShoppingCartIcon,
-  },  
+  },
 ];
 
 const Dashboard = () => {
-
   const location = useLocation();
 
-  // const theme = useTheme();
+  const theme = useTheme();
+  console.log(theme.palette.background);
 
   return (
     <Box
       sx={{
         display: "flex",
         minHeight: "100vh",
-        bgcolor: "theme.palette.background.default",
-        color: "theme.palette.text.primary"
+        bgcolor: theme.palette.background.default,
+        color: theme.palette.text.primary,
       }}
     >
-      <Box sx={{width: 260}}>
+      <Box sx={{ width: 260 }}>
         <Sidebar />
       </Box>
-      <Stack sx={{flex: 1}}>
+      <Stack sx={{ flex: 1 }}>
         <Navbar />
         <Box
           sx={{
-            bgcolor: "theme.palette.background.default",
-            
+            flex: 1,
+            bgcolor: theme.palette.background.default,
           }}
         >
-          { 
-            location.pathname === '/'
-            ? (
-            <Stack>
-              <Stack
-                sx={{ p: 3, display: "flex", flexDirection: "column", gap: 3 }}
-              >
+          {location.pathname === "/" ? (
+            <Stack sx={{ p: 3 }}>
+              <Stack sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
                 <DashboardTop />
                 <Stack direction={"row"} spacing={2}>
                   {statsData.map((stat) => {
@@ -87,14 +83,14 @@ const Dashboard = () => {
                   })}
                 </Stack>
               </Stack>
-              <Stack direction={"row"}>
-                <UsersTable/>
-                
+              <Stack direction={"row"} sx={{ gap: 3, mt: 3 }}>
+                <UsersTable />
+                <SettingsTable />
               </Stack>
             </Stack>
-          )
-            : <Outlet />
-          }
+          ) : (
+            <Outlet />
+          )}
         </Box>
       </Stack>
     </Box>
