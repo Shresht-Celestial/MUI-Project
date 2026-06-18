@@ -5,6 +5,7 @@ import {
   Switch,
   Toolbar,
   Typography,
+  useTheme,
   // useTheme,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -14,28 +15,29 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
+import { useColorMode } from "../theme/ThemeProvider";
 // import { useColorMode } from "../theme/ThemeProvider";
 
 const Navbar = () => {
   const location = useLocation();
   const currentPageName = location.pathname.slice(1);
 
-  // const { mode, toggleColorMode } = useColorMode();
+  const { mode, toggleColorMode } = useColorMode();
 
-  // const theme = useTheme();
-  // const toggleTheme = (e) => {
-  //   e.target.checked ? toggleColorMode("dark") : toggleColorMode("light");
-  // };
+  const theme = useTheme();
+  const toggleTheme = (e) => {
+    e.target.checked ? toggleColorMode("dark") : toggleColorMode("light");
+  };
 
   return (
     <AppBar
       position="static"
       elevation={0}
       sx={{
-        bgcolor: "background.default",
-        color: "#000"
-        // backgroundColor: theme.palette.background.default,
-        // color: `${theme.palette.text.primary} !important`,
+        // bgcolor: "background.default",
+        // color: "#000",
+        backgroundColor: theme.palette.background.default,
+        color: `${theme.palette.text.primary} !important`,
       }}
     >
       <Toolbar>
@@ -64,8 +66,8 @@ const Navbar = () => {
                 <LightModeOutlinedIcon />
               </IconButton>
               <Switch
-                // value={mode === "dark" ? true : false}
-                // onChange={toggleTheme}
+                value={mode === "dark" ? true : false}
+                onChange={toggleTheme}
               />
               <IconButton>
                 <DarkModeOutlinedIcon />

@@ -1,14 +1,15 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, } from "@mui/material";
 import Sidebar from "../components/Sidebar";
 import { Outlet, useLocation } from "react-router";
 import Navbar from "../components/Navbar";
 import DashboardTop from "../components/DashboardTop";
 import StatCard from "../components/StatCard";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import PeopleIcon from "@mui/icons-material/People";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PeopleIcon from '@mui/icons-material/People';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import UsersTable from "../components/UsersTable";
+
 
 const statsData = [
   {
@@ -34,31 +35,38 @@ const statsData = [
     value: "2,350",
     growth: "+10.1%",
     icon: ShoppingCartIcon,
-  },
+  },  
 ];
 
 const Dashboard = () => {
+
   const location = useLocation();
+
+  // const theme = useTheme();
 
   return (
     <Box
       sx={{
         display: "flex",
         minHeight: "100vh",
-        bgcolor: "#F8FAFC",
+        bgcolor: "theme.palette.background.default",
+        color: "theme.palette.text.primary"
       }}
     >
-      <Box sx={{ width: 260 }}>
+      <Box sx={{width: 260}}>
         <Sidebar />
       </Box>
-      <Stack sx={{ flex: 1 }}>
+      <Stack sx={{flex: 1}}>
         <Navbar />
         <Box
           sx={{
-            bgcolor: "#F8FAFC",
+            bgcolor: "theme.palette.background.default",
+            
           }}
         >
-          {location.pathname === "/" ? (
+          { 
+            location.pathname === '/'
+            ? (
             <Stack>
               <Stack
                 sx={{ p: 3, display: "flex", flexDirection: "column", gap: 3 }}
@@ -84,9 +92,9 @@ const Dashboard = () => {
                 
               </Stack>
             </Stack>
-          ) : (
-            <Outlet />
-          )}
+          )
+            : <Outlet />
+          }
         </Box>
       </Stack>
     </Box>
