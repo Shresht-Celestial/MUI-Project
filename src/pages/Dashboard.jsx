@@ -10,6 +10,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import UsersTable from "../components/UsersTable";
 import SettingsTable from "../components/SettingsTable";
+import { useState } from "react";
 
 const statsData = [
   {
@@ -40,6 +41,7 @@ const statsData = [
 
 const Dashboard = () => {
   const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const theme = useTheme();
   console.log(theme.palette.background);
@@ -48,16 +50,26 @@ const Dashboard = () => {
     <Box
       sx={{
         display: "flex",
-        minHeight: "100vh",
+        maxHeight: "100vh",
+        overflow: "hidden",
         bgcolor: theme.palette.background.default,
         color: theme.palette.text.primary,
       }}
     >
-      <Box sx={{ width: 260 }}>
-        <Sidebar />
-      </Box>
+      {menuOpen && (
+        <Box
+          sx={{
+            width: 260,
+            borderRight: `1px solid ${theme.palette.custom.border}`,
+            bgcolor: theme.palette.custom.sidebar,
+            color: theme.palette.custom.sidebarText,
+          }}
+        >
+          <Sidebar />
+        </Box>
+      )}
       <Stack sx={{ flex: 1 }}>
-        <Navbar />
+        <Navbar setMenuOpen={setMenuOpen} />
         <Box
           sx={{
             flex: 1,

@@ -17,7 +17,7 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import { useColorMode } from "../theme/ThemeProvider";
 
-const Navbar = () => {
+const Navbar = ({ setMenuOpen  }) => {
   const location = useLocation();
   const theme = useTheme();
 
@@ -46,7 +46,7 @@ const Navbar = () => {
           }}
         >
           <Stack direction="row" spacing={2.5} sx={{ alignItems: "center" }}>
-            <IconButton sx={{ color: theme.palette.text.primary }}>
+            <IconButton sx={{ color: theme.palette.text.primary }} onClick={() => setMenuOpen(prev => !prev)}>
               <MenuIcon />
             </IconButton>
 
