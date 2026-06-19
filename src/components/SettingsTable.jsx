@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Checkbox,
   FormControlLabel,
@@ -27,10 +28,12 @@ const SettingsTable = () => {
         borderRadius: 3,
         bgcolor: theme.palette.background.paper,
         border: `1px solid ${theme.palette.custom.border}`,
+        height: 470,
       }}
     >
       <Stack>
-        <Typography
+        <Box sx={{position:"sticky", }}>
+          <Typography
           variant="h6"
           sx={{
             color: theme.palette.text.primary,
@@ -38,6 +41,7 @@ const SettingsTable = () => {
         >
           Settings
         </Typography>
+        </Box>
 
         <Stack
           sx={{
@@ -45,6 +49,8 @@ const SettingsTable = () => {
             display: "flex",
             flexDirection: "column",
             gap: 1,
+            height: 390,
+            overflow: "auto",
           }}
         >
           <Stack

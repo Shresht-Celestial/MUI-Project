@@ -24,6 +24,7 @@ const Navbar = () => {
   const currentPageName = location.pathname.slice(1);
 
   const {mode, toggleColorMode} = useColorMode();
+  
 
   return (
     <AppBar

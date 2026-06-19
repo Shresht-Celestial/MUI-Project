@@ -5,9 +5,7 @@ import { getTheme } from "./Theme";
 
  const ColorModeContext = createContext();
 
-export const useColorMode = () => {
-  return useContext(ColorModeContext);
-};
+
 
 const CustomThemeProvider = ({ children }) => {
   const [mode, setMode] = useState("light");
@@ -29,3 +27,7 @@ const CustomThemeProvider = ({ children }) => {
 };
 
 export default CustomThemeProvider;
+
+export const useColorMode = () => {
+  return useContext(ColorModeContext);
+};

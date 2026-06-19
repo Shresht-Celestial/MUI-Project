@@ -1,4 +1,6 @@
 import {
+  Box,
+  Button,
   FormControl,
   FormControlLabel,
   InputLabel,
@@ -21,20 +23,23 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+
 
 const MenuProps = {
   slotProps: {
     paper: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
+      sx: {
+        maxHeight: 320,
+        width: 280,
+      },
+    },
+    list: {
+      sx: {
+        p: 0,
       },
     },
   },
 };
-
 const departments = ["Engineering", "Marketing", "Sales", "Finance", "Support"];
 const statuses = ["Active", "Inactive", "Pending", "Suspended", "Deleted"];
 
@@ -80,8 +85,6 @@ const DashboardTop = () => {
             <InputLabel id="department-label">All Departments</InputLabel>
 
             <Select
-              labelId="department-label"
-              id="department-select"
               multiple
               value={department}
               onChange={handleDepartment}
@@ -89,21 +92,26 @@ const DashboardTop = () => {
               renderValue={(selected) => selected.join(", ")}
               MenuProps={MenuProps}
             >
-              <TextField
-                placeholder="Search departments..."
-                fullWidth
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchOutlinedIcon
-                          sx={{ color: theme.palette.text.secondary }}
-                        />
-                      </InputAdornment>
-                    ),
-                  },
-                }}
-              />
+              <Box sx={{ p: 1 }}>
+                <TextField
+                  size="small"
+                  placeholder="Search departments..."
+                  fullWidth
+                  onKeyDown={(e) => e.stopPropagation()}
+                  slotProps={{
+                    input: {
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchOutlinedIcon
+                            sx={{ color: theme.palette.text.secondary }}
+                          />
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+              </Box>
+
               {departments.map((dept) => {
                 const selected = department.includes(dept);
                 const SelectionIcon = selected
@@ -120,6 +128,24 @@ const DashboardTop = () => {
                   </MenuItem>
                 );
               })}
+
+              <Stack
+                direction="row"
+                sx={{
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  borderTop: `1px solid ${theme.palette.custom.border}`,
+                  p: 1.5,
+                }}
+              >
+                <Typography variant="body2" sx={{ fontSize: 13 }}>
+                  {department.length} of {departments.length} selected
+                </Typography>
+
+                <Button size="small" onClick={() => setDepartment([])}>
+                  Clear All
+                </Button>
+              </Stack>
             </Select>
           </FormControl>
         </Stack>
@@ -152,15 +178,32 @@ const DashboardTop = () => {
                   : CheckBoxOutlineBlankIcon;
 
                 return (
-                  <MenuItem key={statusItem} value={statusItem}>
-                    <SelectionIcon
-                      fontSize="small"
-                      style={{ marginRight: 8 }}
-                    />
-                    <ListItemText primary={statusItem} />
-                  </MenuItem>
+                    <MenuItem key={statusItem} value={statusItem}>
+                      <SelectionIcon
+                        fontSize="small"
+                        style={{ marginRight: 8 }}
+                      />
+                      <ListItemText primary={statusItem} />
+                    </MenuItem>
                 );
               })}
+              <Stack
+                direction="row"
+                sx={{
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  borderTop: `1px solid ${theme.palette.custom.border}`,
+                  p: 1.5,
+                }}
+              >
+                <Typography variant="body2" sx={{ fontSize: 13 }}>
+                  {status.length} of {status.length} selected
+                </Typography>
+
+                <Button size="small" onClick={() => setStatus([])}>
+                  Clear All
+                </Button>
+              </Stack>
             </Select>
           </FormControl>
         </Stack>

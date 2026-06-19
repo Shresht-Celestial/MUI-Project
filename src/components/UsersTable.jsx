@@ -1,16 +1,31 @@
 import {
   Avatar,
+  Box,
+  // Box,
   Button,
   Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  // Drawer,
+  // FormControl,
   IconButton,
+  Modal,
+  // InputLabel,
+  // MenuItem,
   Paper,
+  // Select,
   Stack,
+  // Switch,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  // TextField,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -19,7 +34,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import DownloadIcon from "@mui/icons-material/Download";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-
+import { useState } from "react";
+// import CloseIcon from '@mui/icons-material/Close';
 const usersData = [
   {
     id: 1,
@@ -73,6 +89,11 @@ const usersData = [
 
 const UsersTable = () => {
   const theme = useTheme();
+
+  const [openEdit, setOpenEdit] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const [openMore, setOpenMore] = useState(false);
 
   return (
     <Paper
@@ -137,7 +158,7 @@ const UsersTable = () => {
                   >
                     {heading}
                   </TableCell>
-                )
+                ),
               )}
             </TableRow>
           </TableHead>
@@ -208,13 +229,266 @@ const UsersTable = () => {
                 </TableCell>
 
                 <TableCell align="right">
-                  <IconButton sx={{ color: theme.palette.text.secondary }}>
+                  <IconButton
+                    sx={{ color: theme.palette.text.secondary }}
+                    onClick={() => {
+                      setSelectedUser(user);
+                      setOpenEdit(true);
+                    }}
+                  >
                     <EditIcon fontSize="small" />
                   </IconButton>
+                  <Dialog
+                    open={openEdit}
+                    onClose={() => setOpenEdit(false)}
+                    aria-labelledby="dialog-title"
+                    aria-describedby="dialog-description"
+                    maxWidth="sm"
+                    fullWidth
+                    // hideBackdrop
+                    slotProps={{
+                      backdrop: {
+                        sx: {
+                          backgroundColor: "rgba(0,0,0,0.2)",
+                        },
+                      },
+                    }}
+                  >
+                    <DialogTitle>Edit User Details</DialogTitle>
 
-                  <IconButton sx={{ color: theme.palette.text.secondary }}>
+                    <DialogContent>
+                      <DialogContentText>
+                        Edit details for {selectedUser?.name}
+                      </DialogContentText>
+                    </DialogContent>
+
+                    <DialogActions>
+                      <Stack direction={"row"} spacing={5}>
+                        <Button
+                        variant="contained"
+                        onClick={() => setOpenEdit(false)}
+                        sx={{
+                          color:theme.palette.custom.errorText,
+                          bgcolor:theme.palette.custom.errorBg
+                        }}
+                      >
+                        Cancel
+                      </Button>
+
+                      <Button
+                        variant="contained"
+                        onClick={() => setOpenEdit(false)}
+                        sx={{
+                          color:theme.palette.custom.successText,
+                          bgcolor:theme.palette.custom.successBg
+                        }}
+                      >
+                        Save
+                      </Button>
+                      </Stack>
+                    </DialogActions>
+                  </Dialog>
+
+                  {/* <Modal 
+                    open={openEdit} 
+                    onClose={() => setOpenEdit(false)} 
+                    slotProps={{
+                      backdrop: {
+                        sx:{
+                          backgroundColor:"rgba(0,0,0,0.2)"
+                        }
+                      }
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: 400,
+                        bgcolor: "background.paper",
+                        borderRadius: 2,
+                        p: 3,
+                      }}
+                    >
+                      <Typography variant="h6">Edit User</Typography>
+                      <Button onClick={() => setOpenEdit(false)}>Cancel</Button>
+                      <Button onClick={() => setOpenEdit(false)}>Submit</Button>
+                    </Box>
+                  </Modal> */}
+
+                  {/* <Drawer
+                    anchor="right"
+                    open={openEdit}
+                    onClose={() => setOpenEdit(false)}
+                    slotProps={{
+                      backdrop: {
+                        sx: {
+                          backgroundColor: "rgba(34, 33, 33, 0.12)",
+                        },
+                      },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: 400,
+                        height: "100%",
+                        bgcolor: theme.palette.background.paper,
+                        p: 3,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 3,
+                      }}
+                    >
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Typography
+                          variant="h5"
+                          sx={{
+                            fontWeight: 600,
+                            color: theme.palette.text.primary,
+                          }}
+                        >
+                          Edit User
+                        </Typography>
+
+                        <IconButton onClick={() => setOpenEdit(false)}>
+                          <CloseIcon />
+                        </IconButton>
+                      </Stack>
+                      <Stack direction="row" spacing={2} alignItems="center">
+                        <Avatar
+                          sx={{
+                            width: 60,
+                            height: 60,
+                            bgcolor: theme.palette.primary.main,
+                            fontSize: 24,
+                          }}
+                        >
+                          {selectedUser?.name?.[0]}
+                        </Avatar>
+
+                        <Stack>
+                          <Typography fontWeight={600}>
+                            {selectedUser?.name}
+                          </Typography>
+
+                          <Typography variant="body2" color="text.secondary">
+                            {selectedUser?.email}
+                          </Typography>
+                        </Stack>
+                      </Stack>
+                      <TextField
+                        label="Name"
+                        defaultValue={selectedUser?.name}
+                        fullWidth
+                      />
+
+                      <TextField
+                        label="Email"
+                        defaultValue={selectedUser?.email}
+                        fullWidth
+                      />
+                      <FormControl fullWidth>
+                        <InputLabel>Role</InputLabel>
+
+                        <Select defaultValue={selectedUser?.role} label="Role">
+                          <MenuItem value="Admin">Admin</MenuItem>
+                          <MenuItem value="Manager">Manager</MenuItem>
+                          <MenuItem value="User">User</MenuItem>
+                        </Select>
+                      </FormControl>
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Typography>Active Status</Typography>
+
+                        <Switch
+                          defaultChecked={selectedUser?.status === "Active"}
+                        />
+                      </Stack>
+                      <Stack
+                        direction="row"
+                        spacing={2}
+                        sx={{
+                          mt: "auto",
+                        }}
+                      >
+                        <Button
+                          variant="outlined"
+                          fullWidth
+                          onClick={() => setOpenEdit(false)}
+                        >
+                          Cancel
+                        </Button>
+
+                        <Button variant="contained" fullWidth>
+                          Save Changes
+                        </Button>
+                      </Stack>
+                    </Box>
+                  </Drawer> */}
+
+                  <IconButton
+                    sx={{ color: theme.palette.text.secondary }}
+                    onClick={() => setOpenMore(true)}
+                  >
                     <MoreVertIcon fontSize="small" />
                   </IconButton>
+                  <Modal
+                    open={openMore}
+                    onClose={() => setOpenMore(false)}
+                    slotProps={{
+                      backdrop: {
+                        sx: {
+                          backgroundColor: "rgba(32, 30, 30, 0.2)",
+                        },
+                      },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: 400,
+                        bgcolor: "background.paper",
+                        borderRadius: 2,
+                        p: 3,
+                      }}
+                    >
+                      <Typography variant="h6">Delete User</Typography>
+                      <Stack direction={"row"} spacing={5}>
+                        <Button
+                        variant="contained"
+                        onClick={() => setOpenMore(false)}
+                        sx={{
+                          color:theme.palette.custom.errorText,
+                          bgcolor:theme.palette.custom.errorBg
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        variant="contained"
+                        onClick={() => setOpenMore(false)}
+                        sx={{
+                          color:theme.palette.custom.successText,
+                          bgcolor:theme.palette.custom.successBg
+                        }}
+                      >
+                        Delete
+                      </Button>
+                      </Stack>
+                    </Box>
+                  </Modal>
                 </TableCell>
               </TableRow>
             ))}

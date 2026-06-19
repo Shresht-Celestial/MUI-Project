@@ -1,5 +1,7 @@
 import {
   Box,
+  Button,
+  Drawer,
   List,
   ListItemButton,
   ListItemIcon,
@@ -19,6 +21,9 @@ import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
 import { useLocation, useNavigate } from "react-router";
+import { useState } from "react";
+import CloseIcon from '@mui/icons-material/Close';
+
 
 const menuItems = [
   { label: "Dashboard", path: "/", icon: HomeOutlinedIcon },
@@ -35,16 +40,22 @@ const Sidebar = () => {
   const selectedPath = location.pathname;
   const navigate = useNavigate();
   const theme = useTheme();
+
+  const [open, setOpen] = useState(false);
   return (
-    <Box
+   <>
+   <Button onClick={() => setOpen(true)}>Open Sidebar</Button>
+    <Drawer open={open} onClose={() => setOpen(false)} anchor="left" hideBackdrop>
+      <Box
       sx={{
+        width: 255,
         bgcolor: theme.palette.custom.sidebar,
         color: theme.palette.custom.sidebarText,
         minHeight: "100vh",
         px: 3,
         py: 5,
       }}
-    >
+>
       <Stack
         spacing={30}
         sx={{
@@ -117,7 +128,7 @@ const Sidebar = () => {
           </List>
         </Box>
 
-        <Box>
+        <Stack spacing={-0.5}>
           <ListItemButton
             sx={{
               borderRadius: 2,
@@ -139,9 +150,33 @@ const Sidebar = () => {
               sx={{ color:  theme.palette.custom.sidebarText}}
             />
           </ListItemButton>
-        </Box>
+          <ListItemButton
+            onClick={() => setOpen(false)}
+            sx={{
+              borderRadius: 2,
+              mt: 2,
+              mb: 1,
+              color: theme.palette.custom.sidebarText,
+              bgcolor: theme.palette.custom.sidebar,
+              "&:hover": {
+                      bgcolor: theme.palette.custom.sidebarHover,
+                      color: theme.palette.custom.sidebarActiveText,
+              },
+            }}
+          >
+            <ListItemIcon>
+              <CloseIcon sx={{ color: theme.palette.custom.sidebarText, minWidth: 40 }} />
+            </ListItemIcon>
+            <ListItemText
+              primary={"Close Sidebar"}
+              sx={{ color:  theme.palette.custom.sidebarText}}
+            />
+          </ListItemButton>
+        </Stack>
       </Stack>
-    </Box>
+      </Box>
+    </Drawer>
+   </>
   );
 };
 
