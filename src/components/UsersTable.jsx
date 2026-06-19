@@ -1,16 +1,17 @@
 import {
+  Avatar,
   Button,
+  Chip,
+  IconButton,
   Paper,
   Stack,
   Table,
   TableBody,
-  TableHead,
   TableCell,
-  Typography,
+  TableContainer,
+  TableHead,
   TableRow,
-  Avatar,
-  Chip,
-  IconButton,
+  Typography,
   useTheme,
 } from "@mui/material";
 
@@ -81,21 +82,19 @@ const UsersTable = () => {
         borderRadius: 3,
         bgcolor: theme.palette.background.paper,
         border: `1px solid ${theme.palette.custom.border}`,
+        overflow: "hidden",
       }}
     >
       <Stack
         direction="row"
         sx={{
           justifyContent: "space-between",
-          p: 1,
+          p: 2,
           alignItems: "center",
-          height:70
+          borderBottom: `1px solid ${theme.palette.custom.border}`,
         }}
       >
-        <Typography
-          variant="h6"
-          sx={{ color: theme.palette.text.primary }}
-        >
+        <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
           Recent Users
         </Typography>
 
@@ -104,12 +103,8 @@ const UsersTable = () => {
           startIcon={<DownloadIcon />}
           endIcon={<KeyboardArrowDownIcon />}
           sx={{
-            width: 130,
-            mt: 2,
-            mb: 1,
             border: `1px solid ${theme.palette.custom.border}`,
             color: theme.palette.text.primary,
-
             "&:hover": {
               bgcolor: theme.palette.primary.main,
               color: theme.palette.custom.sidebarActiveText,
@@ -120,135 +115,112 @@ const UsersTable = () => {
         </Button>
       </Stack>
 
-      <Table sx={{height:400,}}>
-        <TableHead
-          sx={{
-            bgcolor: theme.palette.background.default,
-          }}
-        >
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell>Role</TableCell>
-            <TableCell>Joined On</TableCell>
-            <TableCell align="right">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-
-        <TableBody sx={{height: 300, overflow:"auto"}}>
-          {usersData.map((user) => (
-            <TableRow
-              key={user.id}
-              hover
-            >
-              <TableCell>
-                <Stack
-                  direction="row"
-                  spacing={1.5}
-                  alignItems="center"
-                >
-                  <Avatar
+      <TableContainer
+        sx={{
+          maxHeight: 390,
+          overflow: "auto",
+        }}
+      >
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              {["Name", "Email", "Status", "Role", "Joined On", "Actions"].map(
+                (heading) => (
+                  <TableCell
+                    key={heading}
+                    align={heading === "Actions" ? "right" : "left"}
                     sx={{
-                      bgcolor: theme.palette.primary.main,
+                      bgcolor: theme.palette.background.default,
+                      color: theme.palette.text.secondary,
+                      fontWeight: 700,
                     }}
                   >
-                    {user.name[0]}
-                  </Avatar>
-
-                  <Typography
-                    sx={{
-                      color: theme.palette.text.primary,
-                    }}
-                  >
-                    {user.name}
-                  </Typography>
-                </Stack>
-              </TableCell>
-
-              <TableCell>
-                <Typography
-                  sx={{
-                    color: theme.palette.text.secondary,
-                  }}
-                >
-                  {user.email}
-                </Typography>
-              </TableCell>
-
-              <TableCell>
-                <Chip
-                  label={user.status}
-                  size="small"
-                  sx={{
-                    border: 0,
-
-                    bgcolor:
-                      user.status === "Active"
-                        ? theme.palette.custom.successBg
-                        : theme.palette.custom.errorBg,
-
-                    color:
-                      user.status === "Active"
-                        ? theme.palette.custom.successText
-                        : theme.palette.custom.errorText,
-                  }}
-                />
-              </TableCell>
-
-              <TableCell>
-                <Chip
-                  label={user.role}
-                  size="small"
-                  sx={{
-                    bgcolor:
-                      user.role === "Admin"
-                        ? theme.palette.custom.adminBg
-                        : user.role === "Manager"
-                          ? theme.palette.custom.managerBg
-                          : theme.palette.custom.userBg,
-
-                    color:
-                      user.role === "Admin"
-                        ? theme.palette.custom.adminText
-                        : user.role === "Manager"
-                          ? theme.palette.custom.managerText
-                          : theme.palette.custom.userText,
-                  }}
-                />
-              </TableCell>
-
-              <TableCell>
-                <Typography
-                  sx={{
-                    color: theme.palette.text.secondary,
-                  }}
-                >
-                  {user.joinedOn}
-                </Typography>
-              </TableCell>
-
-              <TableCell align="right">
-                <IconButton
-                  sx={{
-                    color: theme.palette.text.secondary,
-                  }}
-                >
-                  <EditIcon fontSize="small" />
-                </IconButton>
-
-                <IconButton
-                  sx={{
-                    color: theme.palette.text.secondary,
-                  }}
-                >
-                  <MoreVertIcon fontSize="small" />
-                </IconButton>
-              </TableCell>
+                    {heading}
+                  </TableCell>
+                )
+              )}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+
+          <TableBody>
+            {usersData.map((user) => (
+              <TableRow key={user.id} hover>
+                <TableCell>
+                  <Stack direction="row" spacing={1.5} alignItems="center">
+                    <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
+                      {user.name[0]}
+                    </Avatar>
+
+                    <Typography sx={{ color: theme.palette.text.primary }}>
+                      {user.name}
+                    </Typography>
+                  </Stack>
+                </TableCell>
+
+                <TableCell>
+                  <Typography sx={{ color: theme.palette.text.secondary }}>
+                    {user.email}
+                  </Typography>
+                </TableCell>
+
+                <TableCell>
+                  <Chip
+                    label={user.status}
+                    size="small"
+                    sx={{
+                      bgcolor:
+                        user.status === "Active"
+                          ? theme.palette.custom.successBg
+                          : theme.palette.custom.errorBg,
+                      color:
+                        user.status === "Active"
+                          ? theme.palette.custom.successText
+                          : theme.palette.custom.errorText,
+                    }}
+                  />
+                </TableCell>
+
+                <TableCell>
+                  <Chip
+                    label={user.role}
+                    size="small"
+                    sx={{
+                      bgcolor:
+                        user.role === "Admin"
+                          ? theme.palette.custom.adminBg
+                          : user.role === "Manager"
+                            ? theme.palette.custom.managerBg
+                            : theme.palette.custom.userBg,
+                      color:
+                        user.role === "Admin"
+                          ? theme.palette.custom.adminText
+                          : user.role === "Manager"
+                            ? theme.palette.custom.managerText
+                            : theme.palette.custom.userText,
+                    }}
+                  />
+                </TableCell>
+
+                <TableCell>
+                  <Typography sx={{ color: theme.palette.text.secondary }}>
+                    {user.joinedOn}
+                  </Typography>
+                </TableCell>
+
+                <TableCell align="right">
+                  <IconButton sx={{ color: theme.palette.text.secondary }}>
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+
+                  <IconButton sx={{ color: theme.palette.text.secondary }}>
+                    <MoreVertIcon fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Paper>
   );
 };

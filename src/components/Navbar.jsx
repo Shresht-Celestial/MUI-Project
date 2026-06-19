@@ -15,6 +15,7 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
+import { useColorMode } from "../theme/ThemeProvider";
 
 const Navbar = () => {
   const location = useLocation();
@@ -22,9 +23,11 @@ const Navbar = () => {
 
   const currentPageName = location.pathname.slice(1);
 
+  const {mode, toggleColorMode} = useColorMode();
+
   return (
     <AppBar
-      position="static"
+      position="sticky"
       elevation={0}
       sx={{
         bgcolor: theme.palette.background.paper,
@@ -59,7 +62,7 @@ const Navbar = () => {
                 <LightModeOutlinedIcon />
               </IconButton>
 
-              <Switch />
+              <Switch checked={mode==="dark"} onChange={toggleColorMode}/>
 
               <IconButton sx={{ color: theme.palette.text.primary }}>
                 <DarkModeOutlinedIcon />

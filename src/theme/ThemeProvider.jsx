@@ -1,15 +1,31 @@
+import { createContext, useContext, useState } from "react";
+import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
+import { getTheme } from "./Theme";
 
-import {  ThemeProvider } from "@mui/material";
-import { theme } from "./Theme";
+ const ColorModeContext = createContext();
 
-export const ColorModeProvider = ({ children }) => {
+export const useColorMode = () => {
+  return useContext(ColorModeContext);
+};
 
-  // const [mode, setMode] = useState("light");
+const CustomThemeProvider = ({ children }) => {
+  const [mode, setMode] = useState("light");
+
+  const toggleColorMode = () => {
+    setMode((prev) => (prev === "light" ? "dark" : "light"));
+  };
+
+  const theme = getTheme(mode);
 
   return (
-      <ThemeProvider theme={theme}>
+    <ColorModeContext.Provider value={{ mode, toggleColorMode }}>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
         {children}
-      </ThemeProvider>
+      </MuiThemeProvider>
+    </ColorModeContext.Provider>
   );
 };
 
+export default CustomThemeProvider;
